@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!-- Tienda generada con Harvys, asistente de e-commerce creado por el Profesor Harvey Sanabria -->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORTEGÓN · Joyería de origen</title>
+<meta name="description" content="Joyería en Bogotá: anillos, candongas, pulseras, topos y dijes. Atención personalizada, recogida presencial y envíos nacionales.">
+<meta name="generator" content="Harvys — asistente de e-commerce del Profesor Harvey Sanabria">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="anim-media tarj-borde modo-oscuro">
+
+<!-- MODAL PAGO -->
+<div class="modal-overlay" id="modal-pago" onclick="modalClickFuera(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h3>Confirmar pago</h3><button class="modal-cerrar" onclick="cerrarModal()" aria-label="Cerrar">✕</button></div>
+    <div class="modal-body">
+      <div class="modal-total"><span class="tl">Total a pagar</span><span class="tm" id="modal-total-monto">$0</span></div>
+      <div class="pago-metodos" id="pago-metodos"></div>
+      <div class="pago-datos" id="pago-datos">
+        <div class="pd-label">Transferir a este número</div>
+        <div class="pd-numero" id="pd-numero"></div>
+        <div class="pd-nombre" id="pd-nombre"></div>
+        <button class="btn-copiar" onclick="copiarNumero()">📋 Copiar número</button>
+      </div>
+      <div class="pasos">
+        <div class="paso"><div class="paso-num">1</div><div class="paso-txt" id="paso-1"></div></div>
+        <div class="paso"><div class="paso-num">2</div><div class="paso-txt">Toca <strong>"Confirmar y enviar"</strong> — se abre WhatsApp con tu pedido</div></div>
+        <div class="paso"><div class="paso-num">3</div><div class="paso-txt" id="paso-3"></div></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <a href="#" target="_blank" rel="noopener" class="btn-wsp" onclick="return prepararWsp(this)">✅ Confirmar y enviar por WhatsApp</a>
+      <button class="btn-seguir" onclick="cerrarModal()">← Seguir comprando</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="cerrarCarrito()"></div>
+
+<!-- VISOR DE FOTOS -->
+<div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Foto del producto">
+  <figure class="visor-caja">
+    <button class="visor-cerrar" aria-label="Cerrar">✕</button>
+    <div class="visor-foto" id="visor-foto"><img id="visor-img" alt=""></div>
+    <figcaption><strong id="visor-nombre"></strong><span id="visor-precio"></span></figcaption>
+    <div class="visor-ayuda">Toca o haz clic en la foto para ampliarla más</div>
+  </figure>
+</div>
+
+<button class="carrito-fab" onclick="toggleCarrito()" id="fab" aria-label="Abrir carrito">🛒<span class="carrito-badge" id="badge">0</span></button>
+
+<div class="carrito-panel" id="panel-carrito">
+  <div class="panel-header"><h3>Tu selección de joyas</h3><button class="btn-cerrar" onclick="cerrarCarrito()" aria-label="Cerrar carrito">✕</button></div>
+  <ul id="lista-carrito"></ul>
+  <div class="panel-footer">
+    <div class="total-row"><span class="total-lbl">Total</span><span class="total-monto" id="total">$0</span></div>
+    <div class="panel-btns"><button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar</button><button class="btn-pagar" onclick="pagar()">Consultar pedido por WhatsApp</button></div>
+  </div>
+</div>
+
+<!-- ASISTENTE DE LA TIENDA (responde con los datos de esta tienda) -->
+<span class="as-aviso" id="as-aviso">¿Te ayudo? 👋</span>
+<button class="as-burbuja" id="as-burbuja" aria-label="Abrir el asistente de la tienda"><svg class="as-robot" viewBox="0 0 64 64" aria-hidden="true">
+      <line x1="32" y1="5" x2="32" y2="14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle class="as-antena" cx="32" cy="5" r="4" fill="currentColor"/>
+      <rect x="4" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="54" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="10" y="14" width="44" height="38" rx="15" fill="currentColor"/>
+      <rect x="16" y="21" width="32" height="20" rx="10" fill="var(--as-cara)"/>
+      <circle class="as-ojo" cx="25" cy="31" r="4" fill="currentColor"/>
+      <circle class="as-ojo" cx="39" cy="31" r="4" fill="currentColor"/>
+      <path d="M26 45q6 4 12 0" stroke="var(--as-cara)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg></button>
+<div class="as-panel" id="as-panel" role="dialog" aria-label="Esme">
+  <div class="as-cabecera">
+    <div class="as-avatar"><svg class="as-robot" viewBox="0 0 64 64" aria-hidden="true">
+      <line x1="32" y1="5" x2="32" y2="14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <circle class="as-antena" cx="32" cy="5" r="4" fill="currentColor"/>
+      <rect x="4" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="54" y="27" width="6" height="12" rx="3" fill="currentColor"/>
+      <rect x="10" y="14" width="44" height="38" rx="15" fill="currentColor"/>
+      <rect x="16" y="21" width="32" height="20" rx="10" fill="var(--as-cara)"/>
+      <circle class="as-ojo" cx="25" cy="31" r="4" fill="currentColor"/>
+      <circle class="as-ojo" cx="39" cy="31" r="4" fill="currentColor"/>
+      <path d="M26 45q6 4 12 0" stroke="var(--as-cara)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg></div>
+    <div><strong>Esme</strong><small><i></i> En línea</small></div>
+    <button id="as-cerrar" aria-label="Cerrar el asistente">✕</button>
+  </div>
+  <div class="as-mensajes" id="as-mensajes"></div>
+  <div class="as-chips" id="as-chips"></div>
+  <form class="as-form" id="as-form">
+    <input id="as-input" placeholder="Escribe tu pregunta…" autocomplete="off" aria-label="Tu pregunta">
+    <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg></button>
+  </form>
+</div>
+
+<header class="hero hero-centrado">
+  <div class="hero-bg efecto-brillo"></div>
+  <div class="hero-content">
+    <div>
+      
+      <div class="hero-badge">Bogotá · Envíos nacionales</div>
+      <h1>ORTEGÓN<span>Joyería de origen</span></h1>
+      <p class="hero-sub">Explora anillos, candongas, pulseras, topos y dijes con atención personalizada para elegir tu próxima joya.</p>
+      <a href="#catalogo" class="btn-hero">Explorar las joyas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <div class="hero-stats"><div class="hero-stat"><div class="num">6</div><div class="lbl">Joyas en el catálogo</div></div><div class="hero-stat"><div class="num">Bogotá</div><div class="lbl">Recogida presencial</div></div><div class="hero-stat"><div class="num">Colombia</div><div class="lbl">Envíos nacionales</div></div></div>
+    </div>
+    </div>
+  <div class="hero-scroll"><div></div></div>
+</header>
+
+<section class="banner-sec">
+  <div class="banner-glow"></div>
+  <div class="banner-content">
+    <div class="sec-label">Conoce ORTEGÓN</div>
+    <h2>Una joya, <em>una elección personal</em></h2>
+    <p>Descubre nuestro catálogo y recibe asesoría personalizada. Contamos con entregas en Bogotá, envíos nacionales y recogida presencial. Tiempo estimado de entrega: 1 a 2 días hábiles; confirma las condiciones para tu destino.</p>
+    <div class="banner-chips"><span class="chip">Atención personalizada</span><span class="chip">Recogida presencial</span><span class="chip">Envíos nacionales</span><span class="chip">Contraentrega con condiciones</span></div>
+  </div>
+</section>
+
+<div class="filtros-wrap" id="filtros-bar">
+  <div class="busqueda-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
+    <input type="text" id="buscador" placeholder="Buscar producto..." oninput="filtrarBusqueda()">
+  </div>
+</div>
+<section class="catalogo-wrap" id="catalogo">
+  <div class="catalogo-header">
+    <div><div class="sec-label">Nuestra colección</div><div class="sec-title">Encuentra tu próxima joya</div></div>
+    <div class="catalogo-count" id="cont-count"></div>
+  </div>
+  <div id="productos"></div>
+</section>
+
+<section class="beneficios-sec" id="beneficios">
+  <div class="sec-centro"><div class="sec-label">La experiencia ORTEGÓN</div><div class="sec-title">Detalles que dan confianza</div></div>
+  <div class="beneficios-grid">
+    <div class="bcard"><div class="bcard-icono">💎</div><h3>Calidad y origen</h3><p>Joyería de origen con productos originales certificados, según lo informado por el negocio. Consulta el certificado de la pieza que elijas.</p></div><div class="bcard"><div class="bcard-icono">🤝</div><h3>Atención personalizada</h3><p>Recibe acompañamiento para conocer las piezas y elegir la joya que mejor va contigo.</p></div><div class="bcard"><div class="bcard-icono">📦</div><h3>Entregas y recogida</h3><p>Envíos a Bogotá y a nivel nacional, con opción de recoger personalmente. Entrega estimada de 1 a 2 días hábiles, por confirmar según destino.</p></div><div class="bcard"><div class="bcard-icono">✨</div><h3>Respaldo para tu compra</h3><p>El negocio ofrece garantía. Consulta sus condiciones, cobertura y duración antes de confirmar tu pedido.</p></div>
+  </div>
+</section>
+<section class="seccion-personalizada" id="custom-condiciones-entrega">
+<section style="background:var(--bg2);color:var(--tx);padding:clamp(24px,5vw,56px);border-radius:var(--r);margin:24px auto;max-width:1200px"><p class="sec-label">Antes de confirmar tu selección</p><h2 class="sec-title">Entregas y atención personal</h2><p>Recibe en Bogotá o a nivel nacional, o recoge personalmente. Tiempo estimado informado: <strong>1 a 2 días hábiles</strong>; consulta la disponibilidad según tu destino. Dirección de recogida: [POR COMPLETAR].</p><p><strong>Contraentrega:</strong> disponible en la mayoría de barrios de Bogotá, dependiendo del producto y previa confirmación. Pedido mínimo de <strong>$200.000 COP</strong> y costo adicional informado de <strong>$18.000 COP</strong>, pendiente de confirmar. Pago en efectivo o transferencia al dueño del negocio. Este costo adicional se confirma por separado y no se presume incluido en el carrito.</p><p>Horario de atención: <strong>lunes a viernes, de 6:00 a. m. a 6:00 p. m.</strong></p><p style="color:var(--tx2)">Los métodos de pago son informativos. Este prototipo académico no procesa cobros. Confirma con el negocio las tallas, las iniciales disponibles, la certificación y las condiciones de garantía de cada pieza.</p></section>
+</section>
+
+<section class="recs-sec">
+  <div class="sec-label">Descubre la colección</div>
+  <div class="sec-title">Joyas para conocer</div>
+  <div class="recs-grid" id="recomendados"></div>
+</section>
+
+<section class="top-sec">
+  <div class="sec-label">Las favoritas de la comunidad</div>
+  <div class="sec-title">Joyas más votadas</div>
+  <div class="top-grid" id="top"></div>
+</section>
+
+<section class="duelo-sec">
+  <div class="sec-label">Tu estilo, tu elección</div>
+  <div class="sec-title">¿Qué joya prefieres?</div>
+  <div class="duelo-arena" id="duelo"></div>
+  <p class="duelo-info">Elige tu favorita para darle un voto y descubrir las preferencias de la comunidad.</p>
+</section>
+
+<section class="horarios-sec">
+  <div class="sec-label">Planea tu visita</div>
+  <div class="sec-title">Horario de atención</div>
+  <ul class="horarios-lista"><li>🕒 Lunes a viernes, de 6:00 a. m. a 6:00 p. m.</li></ul>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-marca"><h3>ORTEGÓN · Joyería de origen</h3><p>ORTEGÓN · Joyería de origen. Bogotá, con entregas locales, recogida presencial y envíos nacionales.</p></div>
+    <div class="footer-col"><h4>Contacto</h4><ul><li><a href="https://wa.me/573134471232" target="_blank" rel="noopener">WhatsApp: +57 3134471232</a></li><li><a href="https://instagram.com/ortegon.joyeria" target="_blank" rel="noopener">Instagram: @ortegon.joyeria</a></li><li>📍 Bogotá</li></ul></div>
+    <div class="footer-col"><h4>Pagos</h4><ul><li>Efectivo</li><li>Nequi</li><li>Daviplata</li><li>Transferencia bancaria</li><li>Llaves</li><li>Tarjetas de crédito · consultar con el negocio</li><li>Contraentrega en Bogotá · previa confirmación</li></ul></div>
+    <div class="footer-col"><h4>Categorías</h4><ul><li>Anillos</li><li>Candongas</li><li>Pulseras</li><li>Topos</li><li>Dijes</li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 ORTEGÓN · Joyería de origen — Todos los derechos reservados</span>
+    <span>Conoce nuestra colección en Instagram: @ortegon.joyeria</span>
+  </div>
+  <div class="footer-credito">
+    Creada con <strong>Harvys</strong> · Prof. Harvey Sanabria ·
+    <a href="https://wa.me/573103323843?text=Hola%20Profesor%20Harvey%2C%20vi%20una%20tienda%20creada%20con%20Harvys%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener">WhatsApp 310 332 3843</a>
+  </div>
+</footer>
+
+<!-- Copia del proyecto para volver a abrirlo en Harvys (botón "Abrir"). No la borres. -->
+<script type="application/json" id="harvys-proyecto">{"negocio":{"nombre":"ORTEGÓN · Joyería de origen","descripcion":"Joyería en Bogotá: anillos, candongas, pulseras, topos y dijes. Atención personalizada, recogida presencial y envíos nacionales.","eslogan":"","ciudad":"Bogotá","cobertura":"Entregas en Bogotá y envíos a nivel nacional. Recogida presencial disponible; dirección [POR COMPLETAR]. Tiempo estimado informado: 1 a 2 días hábiles; confirmar según destino. Contraentrega en la mayoría de barrios de Bogotá, según el producto y previa confirmación.","whatsapp":"573134471232","instagram":"ortegon.joyeria","facebook":"","tiktok":"","horarios":["Lunes a viernes, de 6:00 a. m. a 6:00 p. m."],"logo":""},"tema":{"nombreEstilo":"Esmeralda nocturna","modo":"oscuro","colores":{"primario":"#D8B76B","textoSobrePrimario":"#10271F","fondo":"#081B15","fondoAlterno":"#10291F","tarjeta":"#143326","texto":"#F8F5EC","textoSuave":"#B9C9BF","acento":"#75D9B0"},"fuentes":{"titulos":"Cinzel","cuerpo":"Montserrat"},"titulosMayusculas":true,"radio":8,"animaciones":"media","fondoEfecto":"brillo","hero":"centrado","tarjetas":"borde"},"textos":{"heroEtiqueta":"Bogotá · Envíos nacionales","heroTitulo":"ORTEGÓN","heroTituloResaltado":"Joyería de origen","heroSubtitulo":"Explora anillos, candongas, pulseras, topos y dijes con atención personalizada para elegir tu próxima joya.","heroBoton":"Explorar las joyas","heroImagen":"","estadisticas":[{"valor":"{productos}","etiqueta":"Joyas en el catálogo"},{"valor":"Bogotá","etiqueta":"Recogida presencial"},{"valor":"Colombia","etiqueta":"Envíos nacionales"}],"bannerEtiqueta":"Conoce ORTEGÓN","bannerTitulo":"Una joya,","bannerTituloResaltado":"una elección personal","bannerTexto":"Descubre nuestro catálogo y recibe asesoría personalizada. Contamos con entregas en Bogotá, envíos nacionales y recogida presencial. Tiempo estimado de entrega: 1 a 2 días hábiles; confirma las condiciones para tu destino.","chips":["Atención personalizada","Recogida presencial","Envíos nacionales","Contraentrega con condiciones"],"catalogoEtiqueta":"Nuestra colección","catalogoTitulo":"Encuentra tu próxima joya","botonAgregar":"+ Agregar a mi selección","beneficiosEtiqueta":"La experiencia ORTEGÓN","beneficiosTitulo":"Detalles que dan confianza","recomendadosEtiqueta":"Descubre la colección","recomendadosTitulo":"Joyas para conocer","topEtiqueta":"Las favoritas de la comunidad","topTitulo":"Joyas más votadas","dueloEtiqueta":"Tu estilo, tu elección","dueloTitulo":"¿Qué joya prefieres?","dueloInfo":"Elige tu favorita para darle un voto y descubrir las preferencias de la comunidad.","testimoniosEtiqueta":"Experiencias ORTEGÓN","testimoniosTitulo":"Voces de nuestros clientes","horariosEtiqueta":"Planea tu visita","horariosTitulo":"Horario de atención","footerTexto":"ORTEGÓN · Joyería de origen. Bogotá, con entregas locales, recogida presencial y envíos nacionales.","footerFrase":"Conoce nuestra colección en Instagram: @ortegon.joyeria","carritoTitulo":"Tu selección de joyas","botonPagar":"Consultar pedido por WhatsApp"},"productos":[{"id":"ort-anillo-ovalado","nombre":"Anillo solitario ovalado","precio":9300000,"categoria":"Anillos","imagen":"foto:w0qmim","descripcion":"Anillo solitario de diseño ovalado. Precio interpretado de la plantilla: $9.300.000 COP; pendiente de confirmación. Material y tallas disponibles: [POR COMPLETAR].","opciones":null,"destacado":false},{"id":"ort-candongas-esmeraldas","nombre":"Candongas con esmeraldas","precio":3500000,"categoria":"Candongas","imagen":"foto:7g0vhm","descripcion":"Candongas con esmeraldas. Precio interpretado de la plantilla: $3.500.000 COP; pendiente de confirmación. Material, medidas y certificación específica: [POR COMPLETAR].","opciones":null,"destacado":false},{"id":"ort-pulsera-corazones","nombre":"Pulsera sinfín de corazones","precio":800000,"categoria":"Pulseras","imagen":"foto:nx9rab","descripcion":"Pulsera con diseño sinfín de corazones. Material y medidas: [POR COMPLETAR].","opciones":null,"destacado":false},{"id":"ort-topos-esmeralda","nombre":"Topos de esmeralda","precio":200000,"categoria":"Topos","imagen":"foto:ftynqz","descripcion":"Topos de esmeralda. Material, medidas y certificación específica: [POR COMPLETAR].","opciones":null,"destacado":false},{"id":"ort-dije-inicial","nombre":"Dije de inicial con esmeralda","precio":180000,"categoria":"Dijes","imagen":"foto:a72usg","descripcion":"Dije de inicial con esmeralda. Iniciales disponibles, material y medidas: [POR COMPLETAR]. Confirma la inicial con el negocio antes de realizar el pedido.","opciones":null,"destacado":false},{"id":"ort-anillo-lagrima","nombre":"Anillo solitario lágrima","precio":300000,"categoria":"Anillos","imagen":"foto:rvy3jr","descripcion":"Anillo solitario de diseño lágrima. Material y tallas disponibles: [POR COMPLETAR].","opciones":null,"destacado":false}],"beneficios":[{"icono":"💎","titulo":"Calidad y origen","texto":"Joyería de origen con productos originales certificados, según lo informado por el negocio. Consulta el certificado de la pieza que elijas."},{"icono":"🤝","titulo":"Atención personalizada","texto":"Recibe acompañamiento para conocer las piezas y elegir la joya que mejor va contigo."},{"icono":"📦","titulo":"Entregas y recogida","texto":"Envíos a Bogotá y a nivel nacional, con opción de recoger personalmente. Entrega estimada de 1 a 2 días hábiles, por confirmar según destino."},{"icono":"✨","titulo":"Respaldo para tu compra","texto":"El negocio ofrece garantía. Consulta sus condiciones, cobertura y duración antes de confirmar tu pedido."}],"testimonios":[],"pagos":{"metodos":[{"nombre":"Efectivo","icono":"💵","tipo":"efectivo"},{"nombre":"Nequi","icono":"💜","tipo":"transferencia"},{"nombre":"Daviplata","icono":"🔴","tipo":"transferencia"},{"nombre":"Transferencia bancaria","icono":"🏦","tipo":"transferencia"},{"nombre":"Llaves","icono":"🔑","tipo":"transferencia"},{"nombre":"Tarjetas de crédito · consultar con el negocio","icono":"💳","tipo":"presencial"},{"nombre":"Contraentrega en Bogotá · previa confirmación","icono":"📦","tipo":"contraentrega"}],"numeroTransferencia":"[POR COMPLETAR]","titular":"[POR COMPLETAR]","contraentregaDetalle":"Disponible en la mayoría de barrios de Bogotá, según el producto y previa confirmación. Pedido mínimo: $200.000 COP. Costo adicional informado: $18.000 COP, pendiente de confirmar. Se paga en efectivo o transferencia al dueño del negocio. El costo adicional debe confirmarse con el negocio; no se presume incluido en el total del carrito."},"backend":{"url":"https://script.google.com/macros/s/AKfycbySBpLaVTDQkIVdZlJCOE4t2RLqtkwYsg8Y4oHMrBLcgRZxE3Ro2TmgJW9Ajm94LRg-/exec"},"asistente":{"activo":true,"nombre":"Esme","saludo":"¡Hola! Soy Esme, la asistente de ORTEGÓN. Te ayudo a explorar nuestras joyas y consultar entregas, horarios y formas de pago."},"secciones":["banner","catalogo","beneficios","custom:condiciones-entrega","recomendados","top","duelo","horarios"],"personalizado":{"css":"/* Sin botón flotante independiente de WhatsApp; se conserva el cierre del pedido. */\na.whatsapp-float, a.whatsapp-fab, a#whatsapp-float, a#whatsapp-btn, a.floating-whatsapp { display: none !important; }","secciones":[{"id":"condiciones-entrega","html":"\u003csection style=\"background:var(--bg2);color:var(--tx);padding:clamp(24px,5vw,56px);border-radius:var(--r);margin:24px auto;max-width:1200px\">\u003cp class=\"sec-label\">Antes de confirmar tu selección\u003c/p>\u003ch2 class=\"sec-title\">Entregas y atención personal\u003c/h2>\u003cp>Recibe en Bogotá o a nivel nacional, o recoge personalmente. Tiempo estimado informado: \u003cstrong>1 a 2 días hábiles\u003c/strong>; consulta la disponibilidad según tu destino. Dirección de recogida: [POR COMPLETAR].\u003c/p>\u003cp>\u003cstrong>Contraentrega:\u003c/strong> disponible en la mayoría de barrios de Bogotá, dependiendo del producto y previa confirmación. Pedido mínimo de \u003cstrong>$200.000 COP\u003c/strong> y costo adicional informado de \u003cstrong>$18.000 COP\u003c/strong>, pendiente de confirmar. Pago en efectivo o transferencia al dueño del negocio. Este costo adicional se confirma por separado y no se presume incluido en el carrito.\u003c/p>\u003cp>Horario de atención: \u003cstrong>lunes a viernes, de 6:00 a. m. a 6:00 p. m.\u003c/strong>\u003c/p>\u003cp style=\"color:var(--tx2)\">Los métodos de pago son informativos. Este prototipo académico no procesa cobros. Confirma con el negocio las tallas, las iniciales disponibles, la certificación y las condiciones de garantía de cada pieza.\u003c/p>\u003c/section>"}]}}</script>
+<script type="application/json" id="harvys-rutas">{"ort-anillo-ovalado":"img/anillo-solitario-ovalado-w0qmim.jpg","ort-candongas-esmeraldas":"img/candongas-con-esmeraldas-7g0vhm.jpg","ort-pulsera-corazones":"img/pulsera-sinfin-de-corazones-nx9rab.jpg","ort-topos-esmeralda":"img/topos-de-esmeralda-en-diferentes-disenos-ftynqz.jpg","ort-dije-inicial":"img/dijes-de-inicial-con-esmeralda-a72usg.jpg","ort-anillo-lagrima":"img/anillo-solitario-lagrima-rvy3jr.jpg"}</script>
+<script src="script.js"></script>
+</body>
+</html>
